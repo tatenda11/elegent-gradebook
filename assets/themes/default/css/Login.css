@@ -1,0 +1,12 @@
+#container{
+    background-color: #f3f3f3;
+    width: 100%;
+    min-height:100vh;
+    float:left;
+    padding: 2%;
+}
+.login-form{
+    background-color: #fff;
+    width: 80%;
+    margin-top:50px;
+}
