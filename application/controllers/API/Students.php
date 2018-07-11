@@ -24,7 +24,7 @@ class Students extends CI_Controller
 {
     /**
      * function to return json content from an array
-     * @param $reseponceArray <array>
+     * @param array $reseponceArray 
      * @return void
      */
     private function responceParser($reseponceArray)
@@ -32,6 +32,42 @@ class Students extends CI_Controller
         $this->output->set_content_type('application/json')->set_output(json_encode(array('data'=> $reseponceArray)));
     }
     
+    /**
+     * function to validate user input
+     * @param array <required fields> an array of the require field
+     * @param string http method is used for submited fielsd
+     * @return boolean isInput valid 
+     */
+    private function isInputValid($required_fields, $http_method)
+    {
+        if(strtoupper($http_method) == 'POST')
+        {
+            $is_valid = true;
+            for($index = 0; $index < Count($required_fields); $index ++ )
+            {
+                if($this->input->post($required_fields[$index]) == "")
+                {
+                    $is_valid = false;
+                }
+            }
+            return $is_valid;   
+        }
+        
+        if(strtoupper($http_method) == 'GET')
+        {
+            $is_valid = true;
+            for($index = 0; $index < Count($required_fields); $index ++ )
+            {
+                if($this->input->post($required_fields[$index]) == "")
+                {
+                    $is_valid = false;
+                }
+            }
+            return $is_valid;   
+        }
+        return false;
+    }
+
     /**
      * function to add a new student only works with http POST
      * @return void
@@ -100,6 +136,57 @@ class Students extends CI_Controller
             $this->responceParser(array('error' => true, 'errorMessage' => 'Invalid Student Id'));
             return;     
         }
+        $this->load->model('Gb_student_model');
+        $this->responceParser($this->Gb_student_model->get_gb_student($student_id));
+    }
+    /**
+     * gets all students in student file
+     */
+    public function getAllStudents()
+    {
+        $this->load->model('Gb_student_model');
+        $this->responceParser($this->Gb_student_model->get_all_gb_students());
+    }
+
+    public function updateStudent()
+    {
+        $student_id = (string) $this->uri->segment(3);
+        if($student_id == null)
+        {
+            $this->responceParser(array('error' => true, 'errorMessage' => 'Invalid Student Id'));
+            return;     
+        }
+        //validation 
+        $required_fields = array('firstName', 'lastName', 'dateOfBirth', 'sex' );
+        if($this->isInputValid($required_fields, 'POST') == false)
+        {
+            $this->responceParser(array('error' => true, 'errorMessage' => 'Student first name, last name, sex and date of birth required '));
+            return;
+        }
+        $this->load->model('Gb_student_model');
+        $params = array(
+            'firstName' => $this->input->post('firstName'),
+            'lastName' => $this->input->post('lastName'),
+            'middleName' => $this->input->post('middleName'),
+            'nationalId' => $this->input->post('nationalId'),
+            'birthEntryNumber' => $this->input->post('birthEntryNumber'),
+            'dateOfBirth' => $this->input->post('dateOfBirth'),
+            'sex' => $this->input->post('sex'),
+            'address' => $this->input->post('address'),
+        );
+        if($this->Gb_student_model->update_gb_student($student_id,$params) == true)
+        {
+            $responce = array(
+                'error' => false, 
+                'success' => true,
+                'successMessage' => 'updated student', 
+                'studentId' => $studentId
+            );
+            $this->responceParser($responce);
+            return;
+        }
+        $this->responceParser(array('error' => true, 'errorMessage' => 'failed to update student '));
+        return;
     }
 
 
