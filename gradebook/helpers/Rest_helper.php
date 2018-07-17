@@ -19,7 +19,7 @@
  * @since Gradebook 1.0.1
  */
 
-if(!function_exists('reseponce_parser')){
+if(!function_exists('responce_parser')){
     /** 
      * function for oneway password encrptio
      * @param array <responce_array>
@@ -28,5 +28,45 @@ if(!function_exists('reseponce_parser')){
     function reseponce_parser($response_array)
     {
         return array ('data' => $response_array);
+    }
+}
+
+if(!function_exists('is_input_valid')){
+    /**
+     * function to validate user input
+     * @param array <required fields> an array of the require field
+     * @param string http method is used for submited fielsd
+     * @return boolean isInput valid 
+     */
+    function is_input_valid($required_fields, $http_method = 'POST')
+    {
+        $obj =& get_instance();
+        if(strtoupper($http_method) == 'POST')
+        {
+            $is_valid = true;
+            for($index = 0; $index < Count($required_fields); $index ++ )
+            {
+                if($obj->input->post($required_fields[$index]) == '')
+                {
+                    $is_valid = false;
+                }
+            }
+            return $is_valid;
+           
+        }
+        
+        if(strtoupper($http_method) == 'GET')
+        {
+            $is_valid = true;
+            for($index = 0; $index < Count($required_fields); $index ++ )
+            {
+                if($obj->get($required_fields[$index]) == "")
+                {
+                    $is_valid = false;
+                }
+            }
+            return $is_valid;   
+        }
+        return false;
     }
 }

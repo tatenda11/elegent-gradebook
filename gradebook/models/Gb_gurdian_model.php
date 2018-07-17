@@ -18,6 +18,15 @@ class Gb_gurdian_model extends CI_Model
     {
         return $this->db->get_where('gb_gurdians',array('gurdianId'=>$gurdianId))->row_array();
     }
+
+    
+    /*
+     * Get gb_gurdian by studentld
+     */
+    function get_gb_student_gurdian($studentId)
+    {
+        return $this->db->get_where('gb_gurdians',array('studentId'=>$studentId))->result_array();
+    }
         
     /*
      * Get all gb_gurdians

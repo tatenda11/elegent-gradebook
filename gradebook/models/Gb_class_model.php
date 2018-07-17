@@ -57,9 +57,11 @@ class Gb_class_model extends CI_Model
     /**
      * function to check if class name already entered
      */
-    function check_gb_class_exists($class_name)
+    function check_gb_class_exists($className)
     {
-        $result = $this->db->get_where('gb_classes',array('className'=>$class_name ))->row_array();
-        return (Count($result>0) ? true : false );
+        $where_array = array('className'=> $className);
+        $this->db->where($where_array);
+        $this->db->from('gb_classes');
+        return ( $this->db->count_all_results() > 0 ? true : false);
     }
 }

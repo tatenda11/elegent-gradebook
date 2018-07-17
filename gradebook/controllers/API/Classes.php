@@ -19,70 +19,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since Gradebook 1.0.1
  */
+require APPPATH . '/libraries/REST_Controller.php';
 
-class Classes extends CI_Controller 
+use Restserver\libraries\REST_Controller;
+
+class Classes extends REST_Controller
 {
-    /**
-     * function to return json content from an array
-     * @param array $reseponceArray 
-     * @return void
-     */
-    private function responceParser($reseponceArray)
+    public function  __construct()
     {
-        $this->output->set_content_type('application/json')->set_output(json_encode(array('data'=> $reseponceArray)));
+        parent::__construct();
+        $this->load->helper('Rest');
     }
     
     /**
-     * function to validate user input
-     * @param array <required fields> an array of the require field
-     * @param string http method is used for submited fielsd
-     * @return boolean isInput valid 
-     */
-    private function isInputValid($required_fields, $http_method)
-    {
-        if(strtoupper($http_method) == 'POST')
-        {
-            $is_valid = true;
-            for($index = 0; $index < Count($required_fields); $index ++ )
-            {
-                if($this->input->post($required_fields[$index]) == "")
-                {
-                    $is_valid = false;
-                }
-            }
-            return $is_valid;   
-        }
-        
-        if(strtoupper($http_method) == 'GET')
-        {
-            $is_valid = true;
-            for($index = 0; $index < Count($required_fields); $index ++ )
-            {
-                if($this->input->post($required_fields[$index]) == "")
-                {
-                    $is_valid = false;
-                }
-            }
-            return $is_valid;   
-        }
-        return false;
-    }
-    /**
      * function to add a class
      * @return void
+     * @method Post
      */
-    public function addClass()
+    public function add_new_class_post()
     {
         $required_fields = array('className', 'classStream');
-        if($this->isInputValid($required_fields, 'POST') == false){
-            $this->responceParser(array('error' => true, 'errorMessage' => 'class name and class grade require'));
+        if(is_input_valid($required_fields, 'POST') == false){
+            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'class name and class grade required ' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $this->load->model('Gb_class_model');
         //first check if the class already exists
-        if($this->Gb_class_model->check_gb_class_exists($this->input->post('className') == true))
+        if($this->Gb_class_model->check_gb_class_exists($this->input->post('className'))== true)
         {
-            $this->responceParser(array('error' => true, 'errorMessage' => 'class name already saved in the system'));
+            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'class name already saved in system ' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $params = array(
@@ -92,15 +57,15 @@ class Classes extends CI_Controller
             'syllabusId' => $this->input->post('syllabusId'),
         );
         $classId = $this->Gb_class_model->add_gb_class($params);
-        if(is_int(classId) && classId !== 0)
+        if(is_int($classId) && $classId !== 0)
         {
             $responce = array(
                 'error' => false, 
                 'success' => true,
                 'successMessage' => 'added class', 
-                'studentId' => $studentId
+                'classId' =>  $classId
             );
-            $this->responceParser($responce);
+            $this->set_response(reseponce_parser($responce), REST_Controller::HTTP_CREATED);
             return;
         }
         $this->responceParser(array('error' => true, 'errorMessage' => 'class not added'));
@@ -110,35 +75,32 @@ class Classes extends CI_Controller
      * function to get class
      * useses get url parameter
      * @return void
+     * @method get
      */
-    public function getClass()
+    public function get_class_get()
     {
-        $class_id = (int) $this->uri->segement(3);
-        if($class_id == 0)
+        $required_fields = array('classId');
+        if(is_input_valid($required_fields, 'POST') == false)
         {
-            $this->responceParser(array('error' => true, 'errorMessage' => 'invalid class id'));
+            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'classId  invalid' )), REST_Controller::HTTP_CREATED);
             return;
         }
-        $this->load->model('Cb_class_model');
-        $result = $this->Gb_class_model->get_gb_class($class_id);
-        $this->responceParser($result);
+        $this->load->model('Gb_class_model');
+        $result = $this->Gb_class_model->get_gb_class($this->input->get('classId'));
+        $this->set_response(reseponce_parser($result), REST_Controller::HTTP_CREATED);
+        return;
     }
     /**
      * function to update class
      * @return void
+     * @method post
      */
-    public function updateClass()
+    public function update_class_post()
     {
-        $class_id = (int) $this->uri->segment(3);
-        if($class_id == 0)
+        $required_fields = array('className', 'classStream', 'classId');
+        if(is_input_valid($required_fields,'POST') == false)
         {
-            $this->responceParser(array('error' => true, 'errorMessage' => 'invalid class id'));
-            return;
-        }
-        $required_fields = array('className', 'classStream');
-        if($this->isInputValid($required_fields,'POST') == false)
-        {
-            $this->responceParser(array('error' => true, 'errorMessage' => 'Class name and class stream required'));
+            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'className and class grade required' )), REST_Controller::HTTP_CREATED);
             return;
         } 
         $params = array(
@@ -147,8 +109,31 @@ class Classes extends CI_Controller
             'classStream' => $this->input->post('classStream'),
             'syllabusId' => $this->input->post('syllabusId'),
         );
-        $this->Gb_class_model->update_gb_class($classId,$params);   
-
-
+        $classId = (int) $this->input->post('classId');
+        $this->load->model('Gb_class_model');
+        if($this->Gb_class_model->update_gb_class($classId,$params) == true)
+        {
+            $responce = array(
+                'error' => false, 
+                'success' => true,
+                'successMessage' => 'updated class', 
+                'classId' =>  $classId
+            );
+            $this->set_response(reseponce_parser($responce), REST_Controller::HTTP_CREATED);
+            return;
+        }
+        $this->responceParser(array('error' => true, 'errorMessage' => 'class not update'));
+        return;  
     }
+    /**
+     * get all the classes
+     * @method get
+     * @return void 
+     */
+    public function get_all_classes_get()
+    {
+        $this->load->model('Gb_class_model');
+        $this->set_response(reseponce_parser($this->Gb_class_model->get_all_gb_classes()), REST_Controller::HTTP_CREATED);
+        return;
+    } 
 }    

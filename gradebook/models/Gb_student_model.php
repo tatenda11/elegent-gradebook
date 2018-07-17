@@ -18,7 +18,23 @@ class Gb_student_model extends CI_Model
     {
         return $this->db->get_where('gb_students',array('studentId'=>$studentId))->row_array();
     }
-        
+    /*
+     * checks if a matching student is in the database
+     * @return boolean if match is found   
+     */
+    function check_gb_student_exist($f_name, $l_name, $sex, $dob)
+    {
+        $where_array = array(
+                        'firstName'=>$f_name,
+                        'lastName' => $l_name,
+                        'sex' => $sex,
+                        'dateOfBirth' => $dob
+                       );
+        $this->db->where($where_array);
+        $this->db->from('gb_students');
+        return ( $this->db->count_all_results() > 0 ? true : false);
+    }
+      
     /*
      * Get all gb_students
      */
@@ -33,8 +49,7 @@ class Gb_student_model extends CI_Model
      */
     function add_gb_student($params)
     {
-        $this->db->insert('gb_students',$params);
-        return $this->db->insert_id();
+        return  $this->db->insert('gb_students',$params);
     }
     
     /*
