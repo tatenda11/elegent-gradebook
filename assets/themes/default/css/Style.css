@@ -20,3 +20,10 @@
 .page-content{
     min-height: 100vh;
 }
+.form-input{
+  width:70% !important;
+  margin-top:11px;
+}
+label{
+    font-weight: bold;
+}

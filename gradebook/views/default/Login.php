@@ -1,10 +1,10 @@
 <div id='container'>
     <div class="login-form padding20 block-shadow">
         <?php echo form_open('Gateway/login/');?>	
-            <h1 class="text-light">Login to Elegent Gradebook</h1></br>
+            <h1 class="text-light">Login to Elegent Gradebook</h1>
             <hr class="thin"/>
             <br />
-            <div class="input-control text full-size" data-role="input">
+            <div class="input-control text full-size">
                 <label for="user_login">User email:</label>
                 <input type="text" name="txt_username" id="user_login">
                 <button class="button helper-button clear"><span class="mif-cross"></span></button>

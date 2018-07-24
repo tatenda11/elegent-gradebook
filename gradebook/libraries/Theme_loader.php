@@ -74,4 +74,33 @@ class Theme_loader{
          $files = directory_map('gradebook/views/default', 1);
          return in_array($view.'.php', $files ) == true ?'default/'.$view : $view; 
      }
+
+     /**
+     * loads assert files for theme  css files and js file 
+     * very dependend on naming convectiion 
+     * @param $resouce string abosolute url
+     * @return string qualified path to resource
+     */
+    public static function getReactResource($resource)
+    {
+        $obj =& get_instance();
+        return base_url('assets/common/src'.$resource);
+    }
+
+    /**
+     * loads script files scans theme directory and falls back to common scripts
+     * usefull when overwritting 
+     * @param string <$jsFile> name of the js fie
+     * @return string url to resource 
+     */
+    public function loadScript($jsFile)
+    {
+        $obj =& get_instance();
+        if($obj->session->userdata('theme') != null)
+        {
+            $files = directory_map('gradebook/themes/'. $obj->session->userdata('theme').'/js', 1);
+            return in_array($jsFile, $files ) == true ? base_url('assets/'.$obj->session->userdata('theme').'js/'.$jsFile) : base_url('assets/common/js/'.$jsFile);
+        }
+        return null;
+    }
 }

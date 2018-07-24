@@ -40,7 +40,13 @@ class Manage_students extends CI_Controller
         $data['page'] = 'Add_students';
         $data['title'] = 'Add Students';
         $data['cssArray'] = array('style.css',$data['page'].'.css');
-        $data['jsArray'] = array();
+        $data['themejsArray'] = array('manage_students.js');
+        $data['jsArray'] = array('Students.js');
         $this->load->view(Theme_loader::getView('Basefile'),$data);
+    }
+
+    public function index()
+    {
+        echo $this->config->item('use_jsx');    
     }
 }

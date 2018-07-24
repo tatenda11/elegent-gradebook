@@ -42,6 +42,11 @@
             <script src="<?= Theme_loader::getResource('js/'.$js) ?>"></script>
         <?php endforeach;?>
     <?php endif;?>
-    <script src="<?= Theme_loader::getResource('js/main.js') ?>"></script>
+    <?php if(isset($themejsArray) && !empty($themejsArray)):?>
+        <?php foreach($themejsArray as $js): ?>
+            <script src="<?= Theme_loader::getThemeResource('js/'.$js) ?>"></script>
+        <?php endforeach;?>
+    <?php endif;?>
+    <script src="<?= Theme_loader::getThemeResource('js/main.js') ?>"></script>
 </body>
 </html>

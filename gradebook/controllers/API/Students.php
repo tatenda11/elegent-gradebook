@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * REST API Controller FOR STUDENTS MODEL
  *
  * @package    gradebook
- * @copyright  Elegent Microsystems--------
+ * @copyright  Elegent Microsystems
  * @author     Tatenda Munenge <tatemunenge@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since Gradebook 1.0.1
@@ -31,6 +31,11 @@ class Students extends REST_Controller
     {
         parent::__construct();
         $this->load->helper('Rest');
+    }
+
+    public function  index()
+    {
+
     }
 
     /**
