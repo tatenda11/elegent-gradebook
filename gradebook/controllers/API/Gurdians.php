@@ -40,7 +40,7 @@ class Gurdians extends REST_Controller
     {
         $required_fields = array('studentId','firstName', 'lastName', 'title', 'relationship' );
         if(is_input_valid($required_fields, 'POST') == false){
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'guardian first name, lastname title and relationship to student required  ' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'guardian first name, lastname title and relationship to student required  ' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $this->load->model('Gb_gurdian_model');
@@ -66,7 +66,7 @@ class Gurdians extends REST_Controller
             $this->set_response(reseponce_parser($responce), REST_Controller::HTTP_CREATED);
             return;
         }
-        $this->responceParser(array('error' => true, 'errorMessage' => 'gurdian not added'));
+        $this->responceParser(array('error' => true, 'Message' => 'gurdian not added'));
         return;
     }
     /**
@@ -80,7 +80,7 @@ class Gurdians extends REST_Controller
         $required_fields = array('gurdianId');
         if(is_input_valid($required_fields, 'GET') == false)
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'guardian id invaid  invalid' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'guardian id invaid  invalid' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $this->load->model('Gb_gurdian_model');
@@ -98,7 +98,7 @@ class Gurdians extends REST_Controller
         $required_fields = array('studentId','firstName', 'lastName', 'title', 'relationship' );
         if(is_input_valid($required_fields,'POST') == false)
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'className and class grade required' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'className and class grade required' )), REST_Controller::HTTP_CREATED);
             return;
         } 
         $params = array(
@@ -123,7 +123,7 @@ class Gurdians extends REST_Controller
             $this->set_response(reseponce_parser($responce), REST_Controller::HTTP_CREATED);
             return;
         }
-        $this->responceParser(array('error' => true, 'errorMessage' => 'guardian not updated'));
+        $this->responceParser(array('error' => true, 'Message' => 'guardian not updated'));
         return;  
     }
     /**

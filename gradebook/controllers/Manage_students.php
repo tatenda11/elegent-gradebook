@@ -31,7 +31,7 @@ class Manage_students extends CI_Controller
             redirect(base_url('Gateway'));
         }
     }
-    /***
+    /**
      * @return void
      * function to add new students and render add student view
      */
@@ -40,13 +40,21 @@ class Manage_students extends CI_Controller
         $data['page'] = 'Add_students';
         $data['title'] = 'Add Students';
         $data['cssArray'] = array('style.css',$data['page'].'.css');
-        $data['themejsArray'] = array('manage_students.js');
-        $data['jsArray'] = array('Students.js');
+        $data['jsArray'] = array('manage_students.js');
         $this->load->view(Theme_loader::getView('Basefile'),$data);
     }
 
     public function index()
     {
         echo $this->config->item('use_jsx');    
+    }
+
+    public function manage()
+    {
+        $data['page'] = 'manage_students';
+        $data['title'] = 'Add Students';
+        $data['cssArray'] = array('style.css',$data['page'].'.css');
+        $data['jsArray'] = array('manage_students.js');
+        $this->load->view(Theme_loader::getView('Basefile'),$data);
     }
 }

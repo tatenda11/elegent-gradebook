@@ -1,16 +1,15 @@
 var Students = {
     
     base_url : "",
+    serverResponce : {},
  
-    init: function(  ) {
-        $.getJSON("../config.json", function(data){
-            Students.base_url = data.config[0].base_url;
-        });
-        
+    init: function(url) {
+        Students.base_url = url;  
     },
 
     addStudent: function(Fname, Lname, Mname, NatId, Bentry, Dob, Sex, Address) {
-        var post_url =  Students.base_url+'API/Students/add_new_student';
+        var post_url =  Students.base_url + 'API/Students/add_new_student';
+        Students.serverResponce = {};
         $.post(post_url, 
             {
                 firstName: Fname,
@@ -21,27 +20,17 @@ var Students = {
                 dateOfBirth : Dob,
                 sex: Sex,
                 address: Address
-            },
-            function(data, status){
-                //console.log(status);
+            },function(data, status, xhr){
             }
-        )
+        ).done(function(data){
+            notify(data)
+        }).fail(function(){
+            alert('failed to connect to server refresh the page and retry');
+        });
     },
+
+    
     updateStudent: function() {
-        console.log(this.base_url);
+        alert('i student update ');
     }
 };
-/**
- *  $new_student = array(
-            'studentId' => $studentId,
-            'userId' => $user_system_id,
-            'firstName' => $this->input->post('firstName'),
-            'lastName' => $this->input->post('lastName'),
-            'middleName' => $this->input->post('middleName'),
-            'nationalId' => $this->input->post('nationalId'),
-            'birthEntryNumber' => $this->input->post('birthEntryNumber'),
-            'dateOfBirth' => $this->input->post('dateOfBirth'),
-            'sex' => $this->input->post('sex'),
-            'address' => $this->input->post('address'),
-        );
- */

@@ -35,15 +35,14 @@
             </ul>
         </div>
     </footer>
+    <div data-role="dialog" id="dialog-uf-alert" data-close-button="true" data-type="alert" data-width='60%'></div>
+    <div data-role="dialog" id="dialog-uf-info" data-close-button="true" data-type="info" data-width='60%'></div>
     <script src="<?= base_url('assets/common/js/jquery-2.1.3.min.js') ?>"></script>
+    <script src="<?= base_url('assets/common/js/jquery.dataTables.min.js') ?>"></script>
+    <script src="<?= base_url('assets/common/js/select2.min.js') ?>"></script>
     <script src="<?= base_url('assets/common/third_party/metro/js/metro.min.js') ?>"></script>
     <?php if(isset($jsArray) && !empty($jsArray)):?>
         <?php foreach($jsArray as $js): ?>
-            <script src="<?= Theme_loader::getResource('js/'.$js) ?>"></script>
-        <?php endforeach;?>
-    <?php endif;?>
-    <?php if(isset($themejsArray) && !empty($themejsArray)):?>
-        <?php foreach($themejsArray as $js): ?>
             <script src="<?= Theme_loader::getThemeResource('js/'.$js) ?>"></script>
         <?php endforeach;?>
     <?php endif;?>

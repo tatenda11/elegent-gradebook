@@ -59,11 +59,11 @@
                 <span class="tile-label theme-inverse label-text">Manage classes</span>
             </div>
         </div>
-        <div class="tile bg-blue theme-base" data-role="tile">
+        <a href='<?=  base_url('Manage_classes/add_new_class')  ?>' class="tile bg-blue theme-base" data-role="tile">
             <div class="tile-content">
                 <span class="tile-label theme-inverse label-text">Add class</span>
             </div>
-        </div>
+        </a>
         <div class="tile bg-blue theme-base" data-role="tile">
             <div class="tile-content">
                 <span class="tile-label theme-inverse label-text">Import Batch</span>

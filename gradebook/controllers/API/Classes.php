@@ -40,14 +40,14 @@ class Classes extends REST_Controller
     {
         $required_fields = array('className', 'classStream');
         if(is_input_valid($required_fields, 'POST') == false){
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'class name and class grade required ' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'class name and class grade required ' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $this->load->model('Gb_class_model');
         //first check if the class already exists
         if($this->Gb_class_model->check_gb_class_exists($this->input->post('className'))== true)
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'class name already saved in system ' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'class name already saved in system ' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $params = array(
@@ -62,13 +62,13 @@ class Classes extends REST_Controller
             $responce = array(
                 'error' => false, 
                 'success' => true,
-                'successMessage' => 'added class', 
+                'Message' => 'added class', 
                 'classId' =>  $classId
             );
             $this->set_response(reseponce_parser($responce), REST_Controller::HTTP_CREATED);
             return;
         }
-        $this->responceParser(array('error' => true, 'errorMessage' => 'class not added'));
+        $this->responceParser(array('error' => true, 'Message' => 'class not added'));
         return;
     }
     /**
@@ -82,7 +82,7 @@ class Classes extends REST_Controller
         $required_fields = array('classId');
         if(is_input_valid($required_fields, 'POST') == false)
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'classId  invalid' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'classId  invalid' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $this->load->model('Gb_class_model');
@@ -100,7 +100,7 @@ class Classes extends REST_Controller
         $required_fields = array('className', 'classStream', 'classId');
         if(is_input_valid($required_fields,'POST') == false)
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'className and class grade required' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'className and class grade required' )), REST_Controller::HTTP_CREATED);
             return;
         } 
         $params = array(
@@ -116,13 +116,13 @@ class Classes extends REST_Controller
             $responce = array(
                 'error' => false, 
                 'success' => true,
-                'successMessage' => 'updated class', 
+                'Message' => 'updated class', 
                 'classId' =>  $classId
             );
             $this->set_response(reseponce_parser($responce), REST_Controller::HTTP_CREATED);
             return;
         }
-        $this->responceParser(array('error' => true, 'errorMessage' => 'class not update'));
+        $this->responceParser(array('error' => true, 'Message' => 'class not update'));
         return;  
     }
     /**

@@ -54,14 +54,14 @@ class Students extends REST_Controller
         );
         if(is_input_valid($required_fields) == false)
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'first name, lastname gender and date of birth required  ' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'first name, lastname gender and date of birth required  ' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $this->load->model('Gb_control_model');
         $studentId = $this->Gb_control_model->get_gb_studentId();
         if($studentId == 0) // DID NOT GET sTUDENT iD DISPLAY ERROR TERMINATE EXECUTION
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'failed to resolve student id' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'failed to resolve student id' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $this->load->model('Gb_user_model');
@@ -76,7 +76,7 @@ class Students extends REST_Controller
         if(is_int($user_system_id) == false || $user_system_id == 0 )
         {
             // user did not insert properly show error and terminate
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'failed configure student user account' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'failed configure student user account' )), REST_Controller::HTTP_CREATED);
             return;
         }
         //now insert student into file
@@ -96,19 +96,19 @@ class Students extends REST_Controller
        //check if student aready exisi
         if($this->Gb_student_model->check_gb_student_exist($this->input->post('firstName'), $this->input->post('lastName'), $this->input->post('sex'), $this->input->post('dateOfBirth')) == true)
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'student already in file' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'student already in file' )), REST_Controller::HTTP_CREATED);
             return;
         }
         if($this->Gb_student_model->add_gb_student( $new_student ) == false)
         {
             //student not inserted propery
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'failed configure student user account' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'failed configure student user account' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $responce = array(
             'error' => false, 
             'success' => true,
-            'successMessage' => 'added student succesifully', 
+            'Message' => 'added student succesifully', 
             'studentId' => $studentId
         );
         $this->set_response(reseponce_parser($responce), REST_Controller::HTTP_CREATED);
@@ -124,7 +124,7 @@ class Students extends REST_Controller
         $required_fields = array('studentId');
         if(is_input_valid($required_fields, 'GET') == false)
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'Student id required ' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'Student id required ' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $this->load->model('Gb_student_model');
@@ -159,7 +159,7 @@ class Students extends REST_Controller
         );
         if(is_input_valid($required_fields) == false)
         {
-            $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'first name, lastname gender and date of birth required  ' )), REST_Controller::HTTP_CREATED);
+            $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'first name, lastname gender and date of birth required  ' )), REST_Controller::HTTP_CREATED);
             return;
         }
         $student_info = array(
@@ -179,13 +179,13 @@ class Students extends REST_Controller
             $responce = array(
                 'error' => false, 
                 'success' => true,
-                'successMessage' => 'updated student succesifully', 
+                'Message' => 'updated student succesifully', 
                 'studentId' => $studentId
             );
             $this->set_response(reseponce_parser($responce), REST_Controller::HTTP_CREATED);
             return;
         }
-        $this->set_response(reseponce_parser(array('error' => true, 'errorMessage'=> 'failed to update student' )), REST_Controller::HTTP_CREATED);
+        $this->set_response(reseponce_parser(array('error' => true, 'Message'=> 'failed to update student' )), REST_Controller::HTTP_CREATED);
         return;       
     }
 }
